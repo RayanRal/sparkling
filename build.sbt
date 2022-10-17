@@ -1,9 +1,16 @@
 ThisBuild / version := "0.1.0-SNAPSHOT"
 
-ThisBuild / scalaVersion := "2.13.10"
+ThisBuild / scalaVersion := "2.12.10"
 
 lazy val root = (project in file("."))
   .settings(
     name := "sparkling",
     idePackagePrefix := Some("com.rayanral")
   )
+
+libraryDependencies += "org.apache.spark" % "spark-core_2.12" % "3.3.0"
+libraryDependencies += "org.apache.spark" % "spark-sql_2.12" % "3.3.0"
+
+libraryDependencies += "org.scalactic" %% "scalactic" % "3.2.14"
+
+libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.14" % "test"
