@@ -19,8 +19,8 @@ class SparklingRangeTest extends AnyFlatSpec with SparkTester {
     val accelerator = new Accelerator(sparkSession)
     val resultDf = accelerator.redGoezFasta(testDf)
 
-    resultDf.count() should be(2)
-    resultDf.collect().toList.head.movement should be(15)
+    resultDf.count() should be(4)
+    resultDf.collect().toList.head.movement should be(17)
   }
 
 }

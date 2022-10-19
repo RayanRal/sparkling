@@ -2,7 +2,7 @@ package com.rayanral
 
 import org.apache.spark.sql._
 
-class Accelerator(sparkSession: SparkSession) {
+class Accelerator(sparkSession: SparkSession) extends Serializable {
 
   import sparkSession.implicits._
 
