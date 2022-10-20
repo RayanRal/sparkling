@@ -6,8 +6,12 @@ import org.apache.spark.sql._
 object WhApp {
 
   def main(args: Array[String]): Unit = {
+
+    val config = new SparkConf()
+      .setJars(Seq("./target/scala-2.12/sparkling_2.12-0.1.0-SNAPSHOT.jar"))
+
     val spark = SparkSession.builder.master("spark://127.0.0.1:7077")
-      .config(new SparkConf().setJars(Seq("./target/scala-2.12/sparkling_2.12-0.1.0-SNAPSHOT.jar")))
+      .config(config)
       .appName("Warhammer 40k").getOrCreate()
     import spark.implicits._
 

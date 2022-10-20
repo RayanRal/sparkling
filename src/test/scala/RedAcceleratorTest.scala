@@ -4,7 +4,7 @@ import org.scalatest._
 import flatspec._
 import org.scalatest.matchers.should.Matchers._
 
-class SparklingRangeTest extends AnyFlatSpec with SparkTester {
+class RedAcceleratorTest extends AnyFlatSpec with SparkTester {
 
   import sparkSession.implicits._
 
@@ -20,7 +20,9 @@ class SparklingRangeTest extends AnyFlatSpec with SparkTester {
     val resultDf = accelerator.redGoezFasta(testDf)
 
     resultDf.count() should be(4)
-    resultDf.collect().toList.head.movement should be(17)
+    val redUnits = resultDf.collect().toList.filter(_.color == "Red")
+    redUnits should have size(2)
+    every(redUnits.map(_.movement)) should be(17)
   }
 
 }
