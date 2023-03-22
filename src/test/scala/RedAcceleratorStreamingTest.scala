@@ -15,17 +15,10 @@ class RedAcceleratorStreamingTest extends AnyFlatSpec with SparkStreamingTester 
   "accelerator" should "increase movement of red vehicles" in {
     val topic = "test_topic"
     val tableName = "test_table"
-    val testData = Seq(
-      WarhammerUnit("Orks", "Trukk", "Red", 12),
-      WarhammerUnit("Orks", "Trukk", "Blue", 12),
-      WarhammerUnit("Blood Angels", "Rhino", "Red", 12),
-      WarhammerUnit("Adeptus Astartes", "Librarian", "Ultramarine", 6),
-    )
+    val testData = WarhammerUnit("Orks", "Trukk", "Red", 12)
 
     implicit val serializer: Serializer[WarhammerUnit] =
       new TestJsonSerializer[WarhammerUnit]
-
-
 
     val decoderFn = (v: Array[Byte]) => {
       val deserializer: Deserializer[WarhammerUnit] =
@@ -57,13 +50,14 @@ class RedAcceleratorStreamingTest extends AnyFlatSpec with SparkStreamingTester 
       .trigger(Trigger.Once())
       .start()
 
-    EmbeddedKafka.publishToKafka(topic, testData.head)
+    EmbeddedKafka.publishToKafka(topic, testData)
     query.processAllAvailable()
 
     val results = sparkSession.sql(f"SELECT * FROM $tableName").as[WarhammerUnit].collect()
-    assert(results.length == 1)
+    results.length should be(1)
     val result = results.head
-    assert(result.name == testData.head.name)
+    result.name should be(testData.name)
+    result.movement should be(17)
   }
 
 }
