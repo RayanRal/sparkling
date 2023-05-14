@@ -27,5 +27,4 @@ trait SparkStreamingTester extends SparkTester with Suite with BeforeAndAfterEac
     EmbeddedKafka.stop()
   }
 
-
 }

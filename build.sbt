@@ -8,10 +8,12 @@ lazy val root = (project in file("."))
     idePackagePrefix := Some("com.rayanral")
   )
 
+// spark dependencies
 libraryDependencies += "org.apache.spark" % "spark-core_2.12" % "3.3.0"
 libraryDependencies += "org.apache.spark" % "spark-sql_2.12" % "3.3.0"
 libraryDependencies += "org.apache.spark" % "spark-sql-kafka-0-10_2.12" % "3.3.0"
 libraryDependencies += "org.apache.spark" %% "spark-streaming" % "3.3.0"
 
+// test dependencies
 libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.15" % Test
 libraryDependencies += "io.github.embeddedkafka" %% "embedded-kafka" % "3.4.0" % Test

@@ -11,12 +11,10 @@ import java.nio.charset.StandardCharsets
 class SimpleStreamingTest extends AnyFlatSpec with SparkStreamingTester {
 
 
-  "accelerator" should "increase movement of red vehicles" in {
+  "spark" should "receive message from Kafka" in {
     val topic = "test_topic"
     val tableName = "test_table"
     val testMessage = "test_message"
-
-    import io.github.embeddedkafka.Codecs.stringSerializer
 
     val df = sparkSession.readStream
       .format("kafka")
@@ -25,7 +23,6 @@ class SimpleStreamingTest extends AnyFlatSpec with SparkStreamingTester {
       .option("startingOffsets", "earliest")
       .load()
 
-
     val query = df.writeStream
       .format("memory")
       .queryName(tableName)
@@ -33,13 +30,13 @@ class SimpleStreamingTest extends AnyFlatSpec with SparkStreamingTester {
       .trigger(Trigger.Once())
       .start()
 
-    EmbeddedKafka.publishToKafka(topic, testMessage)
+    EmbeddedKafka.publishStringMessageToKafka(topic, testMessage)
     query.processAllAvailable()
 
     val results = sparkSession.sql(f"SELECT value FROM $tableName").collect()
     results.length should be(1)
-    val message = results.head.getAs[Array[Byte]]("value")
-    new String(message, StandardCharsets.UTF_8) should be(testMessage)
+    val messageBytes = results.head.getAs[Array[Byte]]("value")
+    new String(messageBytes, StandardCharsets.UTF_8) should be(testMessage)
   }
 
 }
